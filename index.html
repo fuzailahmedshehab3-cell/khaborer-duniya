@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>খবরের দুনিয়া — English News in Bengali</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #f5f0e8;
+    --cream: #ede8dc;
+    --accent: #c0392b;
+    --gold: #b8860b;
+    --muted: #6b6050;
+    --border: #ccc5b0;
+    --card-bg: #faf7f2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px 14px;
+    border-bottom: 1px solid #333;
+  }
+
+  .site-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: var(--paper);
+  }
+
+  .site-name span {
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-family: 'Noto Sans Bengali', sans-serif;
+    font-size: 0.78rem;
+    color: #aaa;
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.75rem;
+    color: #aaa;
+    font-family: 'Noto Sans Bengali', sans-serif;
+  }
+
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #2ecc71;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 0;
+    padding: 0 40px;
+    overflow-x: auto;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    color: #bbb;
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.82rem;
+    padding: 10px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-btn:hover, .nav-btn.active {
+    color: var(--paper);
+    border-bottom-color: var(--accent);
+  }
+
+  /* HINT BAR */
+  .hint-bar {
+    background: #fffbe6;
+    border-bottom: 1px solid #e6d96a;
+    padding: 8px 40px;
+    font-family: 'Noto Sans Bengali', sans-serif;
+    font-size: 0.8rem;
+    color: #7a6a00;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 24px;
+  }
+
+  .section-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-top: 2px solid var(--accent);
+    padding-top: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-label .source-name {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* NEWS GRID */
+  .news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .news-grid .featured {
+    grid-column: span 2;
+  }
+
+  .news-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 20px;
+    cursor: default;
+    transition: box-shadow 0.2s;
+    position: relative;
+  }
+
+  .news-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .news-card .source-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  .news-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+
+  .news-card.featured h2 {
+    font-size: 1.6rem;
+  }
+
+  .news-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #4a4030;
+    font-style: italic;
+  }
+
+  .news-card .meta {
+    margin-top: 12px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'Source Serif 4', serif;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .news-card a.read-more {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  .news-card a.read-more:hover { text-decoration: underline; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 30px 0;
+  }
+
+  /* LOADING */
+  .loading-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--cream) 25%, #e8e2d6 50%, var(--cream) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 2px;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .sk-title { height: 22px; width: 85%; margin-bottom: 8px; }
+  .sk-line  { height: 14px; width: 100%; margin-bottom: 5px; }
+  .sk-line.short { width: 60%; }
+
+  /* TOOLTIP */
+  #tooltip {
+    position: fixed;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-family: 'Noto Sans Bengali', sans-serif;
+    font-size: 0.85rem;
+    max-width: 260px;
+    z-index: 9999;
+    display: none;
+    pointer-events: none;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    border-left: 3px solid var(--accent);
+    line-height: 1.5;
+  }
+
+  #tooltip .word-en {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-bottom: 3px;
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+  }
+
+  #tooltip .word-bn {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  #tooltip .word-type {
+    font-size: 0.65rem;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+
+  #tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 16px;
+    border: 6px solid transparent;
+    border-top-color: var(--ink);
+  }
+
+  /* ERROR / EMPTY */
+  .error-msg {
+    text-align: center;
+    padding: 40px 20px;
+    font-family: 'Noto Sans Bengali', sans-serif;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: #888;
+    text-align: center;
+    padding: 20px;
+    font-family: 'Noto Sans Bengali', sans-serif;
+    font-size: 0.75rem;
+    border-top: 2px solid var(--accent);
+  }
+
+  footer span { color: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .news-grid { grid-template-columns: 1fr; }
+    .news-grid .featured { grid-column: span 1; }
+    .header-top { padding: 14px 16px; }
+    .container { padding: 20px 12px; }
+    .hint-bar { padding: 8px 16px; }
+    .site-name { font-size: 1.6rem; }
+  }
+
+  .selecting-text { user-select: text; cursor: text; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <div class="site-name">খবরের <span>দুনিয়া</span></div>
+      <div class="tagline">শীর্ষ ইংরেজি পত্রিকার সব খবর — এক জায়গায়</div>
+    </div>
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      <span id="update-time">আপডেট হচ্ছে...</span>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <button class="nav-btn active" onclick="filterNews('all')">সব খবর</button>
+    <button class="nav-btn" onclick="filterNews('BBC News')">BBC News</button>
+    <button class="nav-btn" onclick="filterNews('Reuters')">Reuters</button>
+    <button class="nav-btn" onclick="filterNews('The Guardian')">The Guardian</button>
+    <button class="nav-btn" onclick="filterNews('Al Jazeera')">Al Jazeera</button>
+    <button class="nav-btn" onclick="filterNews('CNN')">CNN</button>
+  </nav>
+</header>
+
+<div class="hint-bar">
+  💡 <strong>টিপস:</strong> যেকোনো ইংরেজি শব্দ সিলেক্ট করলেই বাংলা অর্থ দেখাবে!
+</div>
+
+<div class="container">
+  <div id="news-container">
+    <!-- news loaded here -->
+    <div class="loading-section">
+      <div class="section-label">সংবাদ লোড হচ্ছে...</div>
+      <div class="news-grid">
+        <div class="news-card featured">
+          <div class="skeleton sk-title"></div>
+          <div class="skeleton sk-line"></div>
+          <div class="skeleton sk-line"></div>
+          <div class="skeleton sk-line short"></div>
+        </div>
+        <div class="news-card">
+          <div class="skeleton sk-title"></div>
+          <div class="skeleton sk-line"></div>
+          <div class="skeleton sk-line short"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tooltip">
+  <div class="word-en" id="tip-en"></div>
+  <div class="word-bn" id="tip-bn"></div>
+  <div class="word-type" id="tip-type"></div>
+</div>
+
+<footer>
+  তৈরি করা হয়েছে ভালোবাসা দিয়ে 🇧🇩 &nbsp;|&nbsp; <span>খবরের দুনিয়া</span> &nbsp;|&nbsp; সব খবর সরাসরি উৎস থেকে
+</footer>
+
+<script>
+// ========================
+// NEWS SOURCES (RSS via proxy)
+// ========================
+const SOURCES = [
+  { name: 'BBC News',     url: 'https://feeds.bbci.co.uk/news/world/rss.xml',          color: '#bb1919' },
+  { name: 'Reuters',      url: 'https://feeds.reuters.com/reuters/topNews',             color: '#ff8000' },
+  { name: 'The Guardian', url: 'https://www.theguardian.com/world/rss',                color: '#005689' },
+  { name: 'Al Jazeera',  url: 'https://www.aljazeera.com/xml/rss/all.xml',            color: '#009a44' },
+  { name: 'CNN',          url: 'http://rss.cnn.com/rss/edition_world.rss',             color: '#cc0000' },
+];
+
+const RSS_PROXY = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+let allNews = [];
+let currentFilter = 'all';
+
+// ========================
+// FETCH NEWS
+// ========================
+async function fetchSource(src) {
+  try {
+    const res = await fetch(`${RSS_PROXY}${encodeURIComponent(src.url)}&count=6`);
+    const data = await res.json();
+    if (data.status !== 'ok') return [];
+    return (data.items || []).slice(0, 6).map(item => ({
+      source: src.name,
+      color: src.color,
+      title: item.title || '',
+      description: stripHtml(item.description || item.content || ''),
+      link: item.link || '#',
+      pubDate: item.pubDate || '',
+    }));
+  } catch(e) {
+    return [];
+  }
+}
+
+function stripHtml(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const txt = tmp.textContent || tmp.innerText || '';
+  return txt.replace(/\s+/g, ' ').trim().substring(0, 200);
+}
+
+function timeAgo(dateStr) {
+  if (!dateStr) return '';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'এইমাত্র';
+  if (mins < 60) return `${mins} মিনিট আগে`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} ঘণ্টা আগে`;
+  return `${Math.floor(hrs/24)} দিন আগে`;
+}
+
+async function loadAllNews() {
+  const results = await Promise.all(SOURCES.map(fetchSource));
+  allNews = results.flat().filter(n => n.title);
+  // shuffle a bit so sources mix
+  allNews.sort(() => Math.random() - 0.5);
+  renderNews(allNews);
+  const now = new Date();
+  document.getElementById('update-time').textContent =
+    `আপডেট: ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+// ========================
+// RENDER
+// ========================
+function filterNews(source) {
+  currentFilter = source;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  const filtered = source === 'all' ? allNews : allNews.filter(n => n.source === source);
+  renderNews(filtered);
+}
+
+function renderNews(items) {
+  const container = document.getElementById('news-container');
+  if (!items.length) {
+    container.innerHTML = '<div class="error-msg">😔 খবর লোড হয়নি। ইন্টারনেট সংযোগ চেক করুন।</div>';
+    return;
+  }
+
+  // Group by source
+  const grouped = {};
+  items.forEach(item => {
+    if (!grouped[item.source]) grouped[item.source] = [];
+    grouped[item.source].push(item);
+  });
+
+  let html = '';
+  Object.entries(grouped).forEach(([source, news]) => {
+    html += `<div class="section-label">
+      <span>${source}</span>
+      <span class="source-name">TOP NEWS</span>
+    </div>`;
+    html += '<div class="news-grid">';
+    news.forEach((item, i) => {
+      const featured = i === 0 ? 'featured' : '';
+      const desc = item.description ? `<p>${item.description}…</p>` : '';
+      html += `
+      <div class="news-card ${featured}">
+        <div class="source-tag" style="color:${item.color}">${item.source}</div>
+        <h2 class="selecting-text">${item.title}</h2>
+        ${desc ? `<div class="selecting-text">${desc}</div>` : ''}
+        <div class="meta">
+          <span>${timeAgo(item.pubDate)}</span>
+          <a class="read-more" href="${item.link}" target="_blank" rel="noopener">পড়ুন →</a>
+        </div>
+      </div>`;
+    });
+    html += '</div><hr class="divider">';
+  });
+
+  container.innerHTML = html;
+}
+
+// ========================
+// WORD TRANSLATION
+// ========================
+const dictionary = {
+  // Common news words
+  government: ['সরকার', 'বিশেষ্য'],
+  president: ['রাষ্ট্রপতি / প্রেসিডেন্ট', 'বিশেষ্য'],
+  minister: ['মন্ত্রী', 'বিশেষ্য'],
+  parliament: ['সংসদ', 'বিশেষ্য'],
+  election: ['নির্বাচন', 'বিশেষ্য'],
+  crisis: ['সংকট', 'বিশেষ্য'],
+  war: ['যুদ্ধ', 'বিশেষ্য'],
+  peace: ['শান্তি', 'বিশেষ্য'],
+  attack: ['আক্রমণ', 'বিশেষ্য'],
+  military: ['সামরিক', 'বিশেষণ'],
+  troops: ['সৈন্যবাহিনী', 'বিশেষ্য'],
+  sanctions: ['নিষেধাজ্ঞা', 'বিশেষ্য'],
+  economy: ['অর্থনীতি', 'বিশেষ্য'],
+  inflation: ['মূল্যস্ফীতি', 'বিশেষ্য'],
+  recession: ['মন্দা / অর্থনৈতিক মন্দা', 'বিশেষ্য'],
+  trade: ['বাণিজ্য', 'বিশেষ্য'],
+  treaty: ['চুক্তি', 'বিশেষ্য'],
+  diplomacy: ['কূটনীতি', 'বিশেষ্য'],
+  refugee: ['শরণার্থী', 'বিশেষ্য'],
+  climate: ['জলবায়ু', 'বিশেষ্য'],
+  disaster: ['দুর্যোগ', 'বিশেষ্য'],
+  earthquake: ['ভূমিকম্প', 'বিশেষ্য'],
+  flood: ['বন্যা', 'বিশেষ্য'],
+  pandemic: ['মহামারী', 'বিশেষ্য'],
+  vaccine: ['টিকা / ভ্যাকসিন', 'বিশেষ্য'],
+  hospital: ['হাসপাতাল', 'বিশেষ্য'],
+  protest: ['প্রতিবাদ / বিক্ষোভ', 'বিশেষ্য'],
+  demonstration: ['সমাবেশ / প্রদর্শনী', 'বিশেষ্য'],
+  arrest: ['গ্রেফতার', 'বিশেষ্য/ক্রিয়া'],
+  investigation: ['তদন্ত', 'বিশেষ্য'],
+  evidence: ['প্রমাণ', 'বিশেষ্য'],
+  verdict: ['রায়', 'বিশেষ্য'],
+  court: ['আদালত', 'বিশেষ্য'],
+  justice: ['বিচার / ন্যায়বিচার', 'বিশেষ্য'],
+  technology: ['প্রযুক্তি', 'বিশেষ্য'],
+  artificial: ['কৃত্রিম', 'বিশেষণ'],
+  intelligence: ['বুদ্ধিমত্তা', 'বিশেষ্য'],
+  nuclear: ['পারমাণবিক', 'বিশেষণ'],
+  alliance: ['জোট / মৈত্রী', 'বিশেষ্য'],
+  ceasefire: ['যুদ্ধবিরতি', 'বিশেষ্য'],
+  humanitarian: ['মানবিক', 'বিশেষণ'],
+  corruption: ['দুর্নীতি', 'বিশেষ্য'],
+  democracy: ['গণতন্ত্র', 'বিশেষ্য'],
+  opposition: ['বিরোধী দল', 'বিশেষ্য'],
+  coalition: ['জোট সরকার', 'বিশেষ্য'],
+  summit: ['শীর্ষ সম্মেলন', 'বিশেষ্য'],
+  bilateral: ['দ্বিপাক্ষিক', 'বিশেষণ'],
+  embargo: ['বাণিজ্য নিষেধাজ্ঞা', 'বিশেষ্য'],
+  sovereignty: ['সার্বভৌমত্ব', 'বিশেষ্য'],
+  territory: ['ভূখণ্ড / অঞ্চল', 'বিশেষ্য'],
+  border: ['সীমান্ত', 'বিশেষ্য'],
+  immigration: ['অভিবাসন', 'বিশেষ্য'],
+  deportation: ['বহিষ্কার / প্রত্যাবাসন', 'বিশেষ্য'],
+  assassination: ['হত্যাকাণ্ড (রাজনৈতিক)', 'বিশেষ্য'],
+  breakthrough: ['অগ্রগতি / যুগান্তকারী আবিষ্কার', 'বিশেষ্য'],
+  controversial: ['বিতর্কিত', 'বিশেষণ'],
+  unprecedented: ['অভূতপূর্ব', 'বিশেষণ'],
+  significant: ['গুরুত্বপূর্ণ', 'বিশেষণ'],
+  critical: ['সমালোচনামূলক / জটিল', 'বিশেষণ'],
+  confirmed: ['নিশ্চিত করা হয়েছে', 'ক্রিয়া'],
+  announced: ['ঘোষণা করা হয়েছে', 'ক্রিয়া'],
+  condemned: ['নিন্দা জানানো হয়েছে', 'ক্রিয়া'],
+  launched: ['চালু করা হয়েছে', 'ক্রিয়া'],
+  suspended: ['স্থগিত করা হয়েছে', 'ক্রিয়া'],
+  rejected: ['প্রত্যাখ্যান করা হয়েছে', 'ক্রিয়া'],
+  approved: ['অনুমোদন দেওয়া হয়েছে', 'ক্রিয়া'],
+  alleged: ['অভিযুক্ত / তথাকথিত', 'বিশেষণ'],
+  amid: ['মধ্যে / মাঝে', 'অব্যয়'],
+  despite: ['সত্ত্বেও', 'অব্যয়'],
+  surge: ['হঠাৎ বৃদ্ধি', 'বিশেষ্য/ক্রিয়া'],
+  threat: ['হুমকি', 'বিশেষ্য'],
+  tension: ['উত্তেজনা', 'বিশেষ্য'],
+  violence: ['সহিংসতা', 'বিশেষ্য'],
+  security: ['নিরাপত্তা', 'বিশেষ্য'],
+  official: ['কর্মকর্তা / সরকারি', 'বিশেষ্য/বিশেষণ'],
+  spokesperson: ['মুখপাত্র', 'বিশেষ্য'],
+  journalist: ['সাংবাদিক', 'বিশেষ্য'],
+  journalist: ['সাংবাদিক', 'বিশেষ্য'],
+  parliament: ['সংসদ', 'বিশেষ্য'],
+  legislature: ['আইনসভা', 'বিশেষ্য'],
+  legislation: ['আইন / আইন প্রণয়ন', 'বিশেষ্য'],
+  referendum: ['গণভোট', 'বিশেষ্য'],
+  impeachment: ['অভিশংসন', 'বিশেষ্য'],
+  deficit: ['ঘাটতি', 'বিশেষ্য'],
+  surplus: ['উদ্বৃত্ত', 'বিশেষ্য'],
+  revenue: ['রাজস্ব', 'বিশেষ্য'],
+  budget: ['বাজেট', 'বিশেষ্য'],
+  poverty: ['দারিদ্র্য', 'বিশেষ্য'],
+  drought: ['খরা', 'বিশেষ্য'],
+  famine: ['দুর্ভিক্ষ', 'বিশেষ্য'],
+  epidemic: ['মহামারী (স্থানীয়)', 'বিশেষ্য'],
+  casualty: ['হতাহত', 'বিশেষ্য'],
+  fatality: ['মৃত্যু / প্রাণহানি', 'বিশেষ্য'],
+  wounded: ['আহত', 'বিশেষণ'],
+  rescue: ['উদ্ধার', 'বিশেষ্য/ক্রিয়া'],
+  evacuation: ['সরিয়ে নেওয়া', 'বিশেষ্য'],
+  opposition: ['বিরোধিতা / বিরোধী দল', 'বিশেষ্য'],
+};
+
+function translateWord(word) {
+  const clean = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (dictionary[clean]) return { bn: dictionary[clean][0], type: dictionary[clean][1] };
+  // Try partial match
+  for (const [key, val] of Object.entries(dictionary)) {
+    if (clean.startsWith(key) || key.startsWith(clean)) {
+      return { bn: val[0], type: val[1] };
+    }
+  }
+  return null;
+}
+
+const tooltip = document.getElementById('tooltip');
+const tipEn = document.getElementById('tip-en');
+const tipBn = document.getElementById('tip-bn');
+const tipType = document.getElementById('tip-type');
+
+document.addEventListener('mouseup', function(e) {
+  const selection = window.getSelection();
+  const word = selection.toString().trim();
+
+  if (!word || word.length < 2 || word.length > 30 || /\s/.test(word)) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  // Only translate if inside news content
+  const anchor = selection.anchorNode;
+  if (!anchor) { tooltip.style.display = 'none'; return; }
+  const parent = anchor.parentElement;
+  if (!parent || !parent.closest('.news-card')) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  const result = translateWord(word);
+  if (!result) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  tipEn.textContent = word;
+  tipBn.textContent = result.bn;
+  tipType.textContent = result.type;
+
+  const range = selection.getRangeAt(0);
+  const rect = range.getBoundingClientRect();
+
+  let left = rect.left + window.scrollX;
+  let top = rect.top + window.scrollY - 70;
+
+  if (left + 260 > window.innerWidth) left = window.innerWidth - 270;
+  if (top < window.scrollY + 10) top = rect.bottom + window.scrollY + 10;
+
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+  tooltip.style.display = 'block';
+});
+
+document.addEventListener('mousedown', function(e) {
+  if (!e.target.closest('#tooltip')) tooltip.style.display = 'none';
+});
+
+document.addEventListener('scroll', function() {
+  tooltip.style.display = 'none';
+});
+
+// ========================
+// INIT
+// ========================
+loadAllNews();
+// Auto refresh every 15 minutes
+setInterval(loadAllNews, 15 * 60 * 1000);
+</script>
+</body>
+</html>
