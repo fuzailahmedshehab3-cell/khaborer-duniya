@@ -642,36 +642,34 @@ const tipEn = document.getElementById('tip-en');
 const tipBn = document.getElementById('tip-bn');
 const tipType = document.getElementById('tip-type');
 
-document.addEventListener('touchend', function(e) {
-  setTimeout(() => {
-    const selection = window.getSelection();
-    const word = selection.toString().trim();
-    if (!word || word.length < 2 || word.length > 30 || /\s/.test(word)) {
-      tooltip.style.display = 'none';
-      return;
-    }
-    const anchor = selection.anchorNode;
-    if (!anchor) { tooltip.style.display = 'none'; return; }
-    const parent = anchor.parentElement;
-    if (!parent || !parent.closest('.news-card')) {
-      tooltip.style.display = 'none';
-      return;
-    }
-    const result = translateWord(word);
-    if (!result) { tooltip.style.display = 'none'; return; }
-    tipEn.textContent = word;
-    tipBn.textContent = result.bn;
-    tipType.textContent = result.type;
-    const range = selection.getRangeAt(0);
-    const rect = range.getBoundingClientRect();
-    let left = rect.left + window.scrollX;
-    let top = rect.top + window.scrollY - 70;
-    if (left + 260 > window.innerWidth) left = window.innerWidth - 270;
-    if (top < window.scrollY + 10) top = rect.bottom + window.scrollY + 10;
-    tooltip.style.left = left + 'px';
-    tooltip.style.top = top + 'px';
-    tooltip.style.display = 'block';
-  }, 300);
+document.addEventListener('selectionchange', function() {
+  const selection = window.getSelection();
+  const word = selection.toString().trim();
+  if (!word || word.length < 2 || word.length > 30 || /\s/.test(word)) {
+    tooltip.style.display = 'none';
+    return;
+  }
+  const anchor = selection.anchorNode;
+  if (!anchor) { tooltip.style.display = 'none'; return; }
+  const parent = anchor.parentElement;
+  if (!parent || !parent.closest('.news-card')) {
+    tooltip.style.display = 'none';
+    return;
+  }
+  const result = translateWord(word);
+  if (!result) { tooltip.style.display = 'none'; return; }
+  tipEn.textContent = word;
+  tipBn.textContent = result.bn;
+  tipType.textContent = result.type;
+  const range = selection.getRangeAt(0);
+  const rect = range.getBoundingClientRect();
+  let left = rect.left + window.scrollX;
+  let top = rect.top + window.scrollY - 70;
+  if (left + 260 > window.innerWidth) left = window.innerWidth - 270;
+  if (top < window.scrollY + 10) top = rect.bottom + window.scrollY + 10;
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+  tooltip.style.display = 'block';
 });
   document.addEventListener('mouseup', function(e) {
   const selection = window.getSelection();
